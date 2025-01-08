@@ -1,0 +1,75 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+
+void sort(int *number, int count) {
+    int j;
+    for (int i = 1; i < count; i++) {
+        int tmp = number[i];
+        for (j = i - 1; j >= 0 && tmp < number[j]; j--)
+            number[j + 1] = number[j];
+        number[j + 1] = tmp;
+    }
+}
+
+int average(int* number, int count)
+{
+    int sum = 0;
+    for (int i = 0; i < count; i++)
+        sum += number[i];
+
+    return (sum > 0 ? (sum + count / 2) / count : (sum - count / 2) / count);
+}
+
+int Mode(int* number, int count)
+{
+    int arr[8001] = { 0 };
+    int max = 0;
+    int mode = 0, secondMode = 0;
+
+    for (int i = 0; i < count; i++)
+        arr[number[i] + 4000]++;
+
+    for (int i = 0; i < count; i++)
+    {
+        if (arr[number[i] + 4000] > max)
+        {
+            max = arr[number[i] + 4000];
+            mode = number[i];
+        }
+        else if (arr[number[i] + 4000] == max && number[i] != mode)
+        {
+            mode = number[i];
+            break;
+        }
+    }
+    return mode;
+}
+
+
+int main()
+{
+	int count = 0;
+    scanf("%d", &count);
+
+	int* number = (int*)malloc(sizeof(int) * count);
+
+	for (int i = 0; i < count; i++)
+        scanf("%d", &number[i]);
+
+    sort(number, count);
+    int aver = average(number, count);
+    int center = number[count / 2];
+    int mode = Mode(number, count);
+    int range = (number[count - 1] - number[0]);
+
+   /*for (int i = 0; i < count; i++)
+        printf("%d ", number[i]);*/
+
+    printf("\n%d\n", aver);
+    printf("%d\n", center);
+    printf("%d\n", mode);
+    printf("%d\n", range);
+
+    free(number);
+}
